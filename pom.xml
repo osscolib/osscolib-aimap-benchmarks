@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ========================================================================= -->
+<!--                                                                           -->
+<!--   Copyright (c) 2019, The OSSCOLIB team (http://www.osscolib.org)         -->
+<!--                                                                           -->
+<!--   Licensed under the Apache License, Version 2.0 (the "License");         -->
+<!--   you may not use this file except in compliance with the License.        -->
+<!--   You may obtain a copy of the License at                                 -->
+<!--                                                                           -->
+<!--       http://www.apache.org/licenses/LICENSE-2.0                          -->
+<!--                                                                           -->
+<!--   Unless required by applicable law or agreed to in writing, software     -->
+<!--   distributed under the License is distributed on an "AS IS" BASIS,       -->
+<!--   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or         -->
+<!--   implied. See the License for the specific language governing            -->
+<!--   permissions and limitations under the License.                          -->
+<!--                                                                           -->
+<!-- ========================================================================= -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.osscolib</groupId>
+    <artifactId>osscolib-aimap-benchmarks</artifactId>
+    <version>ci</version>
+    <packaging>jar</packaging>
+
+    <name>osscolib-aimap-benchmarks</name>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>${project.artifactId}</finalName>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>org.openjdk.jmh.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                            <filters>
+                                <filter>
+                                    <!-- Needed in case we are included signed JARs inside the shaded jar.                             -->
+                                    <!-- http://stackoverflow.com/questions/999489/invalid-signature-file-when-attempting-to-run-a-jar -->
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <osscolib-aimap.version>0.0.1.BUILD-SNAPSHOT</osscolib-aimap.version>
+        <jmh.version>1.21</jmh.version>
+        <junit.version>4.12</junit.version>
+    </properties>
+	
+    <dependencies>
+
+        <dependency>
+            <groupId>org.osscolib</groupId>
+            <artifactId>osscolib-aimap</artifactId>
+            <version>${osscolib-aimap.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+            <version>${jmh.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-generator-annprocess</artifactId>
+            <version>${jmh.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>
