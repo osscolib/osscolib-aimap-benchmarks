@@ -31,7 +31,7 @@ import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
-import org.osscolib.aimap.AtomicIndexedMap;
+import org.osscolib.aimap.FluentIndexedMap;
 import org.osscolib.aimap.benchmarks.KeyValue;
 
 @Fork(2)
@@ -44,9 +44,9 @@ public class BaseBenchmark02 {
 
 
 
-    public void putAll(final AtomicIndexedMap<String,String> map, final KeyValue<String,String>[] entries) {
+    public void putAll(final FluentIndexedMap<String,String> map, final KeyValue<String,String>[] entries) {
 
-        AtomicIndexedMap<String,String> m = map;
+        FluentIndexedMap<String,String> m = map;
 
         for (int i = 0; i < entries.length; i++) {
             m = m.put(entries[i].getKey(), entries[i].getValue());
@@ -65,9 +65,9 @@ public class BaseBenchmark02 {
     }
 
 
-    public void getAll(final AtomicIndexedMap<String,String> map, final KeyValue<String,String>[] entries, final int[] accessOrder) {
+    public void getAll(final FluentIndexedMap<String,String> map, final KeyValue<String,String>[] entries, final int[] accessOrder) {
 
-        AtomicIndexedMap<String,String> m = map;
+        FluentIndexedMap<String,String> m = map;
 
         for (int i = 0; i < accessOrder.length; i++) {
             m.get(entries[accessOrder[i]].getKey());

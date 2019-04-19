@@ -22,18 +22,20 @@ package org.osscolib.aimap.benchmarks.benchmark01;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
 import org.osscolib.aimap.AtomicIndexedMap;
+import org.osscolib.aimap.FluentIndexedMap;
+import org.osscolib.aimap.IndexedMap;
 import org.osscolib.aimap.benchmarks.BenchmarkUtils;
 import org.osscolib.aimap.benchmarks.KeyValue;
 
 public class AimapDefaultBenchmark extends BaseBenchmark01 {
 
-    private AtomicIndexedMap<String,String> map;
+    private FluentIndexedMap<String,String> map;
     private KeyValue<String,String>[] entries;
 
 
     @Setup
     public void setup() throws Exception {
-        this.map = AtomicIndexedMap.build();
+        this.map = IndexedMap.<String,String>build().asFluentMap();
         this.entries = BenchmarkUtils.generateEntries(30);
     }
 
