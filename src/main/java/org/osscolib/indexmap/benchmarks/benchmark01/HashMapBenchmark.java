@@ -17,7 +17,7 @@
  *
  * =============================================================================
  */
-package org.osscolib.aimap.benchmarks.benchmark01;
+package org.osscolib.indexmap.benchmarks.benchmark01;
 
 import java.util.HashMap;
 import java.util.Map;

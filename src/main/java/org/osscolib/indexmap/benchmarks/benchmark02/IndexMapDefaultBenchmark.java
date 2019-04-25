@@ -17,22 +17,21 @@
  *
  * =============================================================================
  */
-package org.osscolib.aimap.benchmarks.benchmark02;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+package org.osscolib.indexmap.benchmarks.benchmark02;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
+import org.osscolib.indexmap.FluentIndexMap;
+import org.osscolib.indexmap.IndexMap;
 
-public class ConcurrentHashMapBenchmark extends BaseBenchmark02 {
+public class IndexMapDefaultBenchmark extends BaseBenchmark02 {
 
-    private Map<String,String> map;
+    private FluentIndexMap<String,String> map;
 
 
     @Setup
     public void setup() throws Exception {
-        this.map = new ConcurrentHashMap<>();
+        this.map = IndexMap.<String,String>build().withMaxNodeSize(100).asFluentMap();
         this.map = putAll(this.map);
     }
 

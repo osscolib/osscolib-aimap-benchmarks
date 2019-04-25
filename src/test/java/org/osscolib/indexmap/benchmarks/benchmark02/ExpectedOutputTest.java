@@ -17,11 +17,11 @@
  *
  * =============================================================================
  */
-package org.osscolib.aimap.benchmarks.benchmark02;
+package org.osscolib.indexmap.benchmarks.benchmark02;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.osscolib.aimap.benchmarks.KeyValue;
+import org.osscolib.indexmap.benchmarks.KeyValue;
 
 public class ExpectedOutputTest {
 
@@ -36,8 +36,8 @@ public class ExpectedOutputTest {
 
 
     @Test
-    public void testAimap() throws Exception {
-        final AimapDefaultBenchmark bench = new AimapDefaultBenchmark();
+    public void testIndexMap() throws Exception {
+        final IndexMapDefaultBenchmark bench = new IndexMapDefaultBenchmark();
         bench.setup();
         final String[] expectedOutput = buildExpectedOutput(bench.getEntries(), bench.getAccessOrder());
         Assert.assertArrayEquals(expectedOutput, bench.benchmark());

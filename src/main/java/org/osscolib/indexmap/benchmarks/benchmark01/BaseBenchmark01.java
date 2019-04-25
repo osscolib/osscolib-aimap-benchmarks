@@ -17,7 +17,7 @@
  *
  * =============================================================================
  */
-package org.osscolib.aimap.benchmarks.benchmark01;
+package org.osscolib.indexmap.benchmarks.benchmark01;
 
 
 import java.util.Map;
@@ -31,9 +31,9 @@ import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
-import org.osscolib.aimap.FluentIndexMap;
-import org.osscolib.aimap.benchmarks.BenchmarkUtils;
-import org.osscolib.aimap.benchmarks.KeyValue;
+import org.osscolib.indexmap.FluentIndexMap;
+import org.osscolib.indexmap.benchmarks.BenchmarkUtils;
+import org.osscolib.indexmap.benchmarks.KeyValue;
 
 @Fork(2)
 @Warmup(iterations = 2, time = 1, timeUnit = TimeUnit.SECONDS)

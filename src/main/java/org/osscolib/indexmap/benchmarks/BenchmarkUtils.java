@@ -17,7 +17,7 @@
  *
  * =============================================================================
  */
-package org.osscolib.aimap.benchmarks;
+package org.osscolib.indexmap.benchmarks;
 
 
 import org.apache.commons.lang3.RandomStringUtils;

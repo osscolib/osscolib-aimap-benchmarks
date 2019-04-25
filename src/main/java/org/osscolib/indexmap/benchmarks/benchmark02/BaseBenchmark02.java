@@ -17,30 +17,60 @@
  *
  * =============================================================================
  */
-package org.osscolib.aimap.benchmarks.benchmark00;
+package org.osscolib.indexmap.benchmarks.benchmark02;
 
 
-import org.osscolib.aimap.FluentIndexMap;
-import org.osscolib.aimap.IndexMap;
-import org.osscolib.aimap.benchmarks.BenchmarkUtils;
-import org.osscolib.aimap.benchmarks.KeyValue;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
-public class BaseBenchmark00 {
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Fork;
+import org.openjdk.jmh.annotations.Measurement;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.annotations.Warmup;
+import org.osscolib.indexmap.FluentIndexMap;
+import org.osscolib.indexmap.benchmarks.BenchmarkUtils;
+import org.osscolib.indexmap.benchmarks.KeyValue;
 
-    public static final int NUM_ENTRIES = 100000;
+@Fork(2)
+@Warmup(iterations = 2, time = 1, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
+@BenchmarkMode(Mode.Throughput)
+@OutputTimeUnit(TimeUnit.SECONDS)
+@State(Scope.Benchmark)
+public class BaseBenchmark02 {
+
+    public static final int NUM_ENTRIES = 50;
 
     private final int numEntries;
     private final KeyValue<String,String>[] entries;
     private final int[] accessOrder;
 
 
-    protected BaseBenchmark00() {
+    protected BaseBenchmark02() {
         super();
         this.numEntries = NUM_ENTRIES;
         this.entries = BenchmarkUtils.generateEntries(this.numEntries);
         this.accessOrder = BenchmarkUtils.generateAccessOrder(this.numEntries);
     }
 
+
+
+
+    public final int getNumEntries() {
+        return this.numEntries;
+    }
+
+    public KeyValue<String,String>[] getEntries() {
+        return this.entries;
+    }
+
+    public int[] getAccessOrder() {
+        return this.accessOrder;
+    }
 
 
 
@@ -54,6 +84,16 @@ public class BaseBenchmark00 {
 
         return m;
 
+    }
+
+
+    public Map<String,String> putAll(final Map<String,String> map) {
+
+        for (int i = 0; i < entries.length; i++) {
+            map.put(this.entries[i].getKey(), this.entries[i].getValue());
+        }
+
+        return map;
     }
 
 
@@ -73,31 +113,16 @@ public class BaseBenchmark00 {
 
 
 
+    public String[] getAll(final Map<String,String> map) {
 
-    public void test() throws Exception{
+        final String[] result = new String[this.accessOrder.length];
 
-        FluentIndexMap<String,String> map = IndexMap.<String,String>build().withMaxNodeSize(100).asFluentMap();
-        map = putAll(map);
-
-        System.out.println("All initialised. Now pausing.");
-
-        Thread.sleep(10000L);
-
-        System.out.println("Read operations starting.");
-
-        for (int i = 0; i < 10000; i++) {
-            getAll(map);
+        for (int i = 0; i < this.accessOrder.length; i++) {
+            result[i] = map.get(this.entries[this.accessOrder[i]].getKey());
         }
 
-    }
-
-
-
-    public static void main(String[] args) throws Exception{
-
-        (new BaseBenchmark00()).test();
+        return result;
 
     }
-
 
 }

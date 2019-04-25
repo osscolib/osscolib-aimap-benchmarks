@@ -17,14 +17,14 @@
  *
  * =============================================================================
  */
-package org.osscolib.aimap.benchmarks.benchmark01;
+package org.osscolib.indexmap.benchmarks.benchmark01;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
-import org.osscolib.aimap.FluentIndexMap;
-import org.osscolib.aimap.IndexMap;
+import org.osscolib.indexmap.FluentIndexMap;
+import org.osscolib.indexmap.IndexMap;
 
-public class AimapDefaultBenchmark extends BaseBenchmark01 {
+public class IndexMapDefaultBenchmark extends BaseBenchmark01 {
 
     private FluentIndexMap<String,String> map;
 

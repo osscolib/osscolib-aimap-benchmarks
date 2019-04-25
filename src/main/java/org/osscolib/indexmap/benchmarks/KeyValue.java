@@ -1,4 +1,4 @@
-package org.osscolib.aimap.benchmarks;
+package org.osscolib.indexmap.benchmarks;
 
 public class KeyValue<K,V> {
 

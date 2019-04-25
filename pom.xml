@@ -23,11 +23,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.osscolib</groupId>
-    <artifactId>osscolib-aimap-benchmarks</artifactId>
+    <artifactId>osscolib-indexmap-benchmarks</artifactId>
     <version>ci</version>
     <packaging>jar</packaging>
 
-    <name>osscolib-aimap-benchmarks</name>
+    <name>osscolib-indexmap-benchmarks</name>
 
     <build>
         <plugins>
@@ -93,7 +93,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <osscolib-aimap.version>0.0.1.BUILD-SNAPSHOT</osscolib-aimap.version>
+        <osscolib-indexmap.version>0.0.1.BUILD-SNAPSHOT</osscolib-indexmap.version>
         <jmh.version>1.21</jmh.version>
         <junit.version>4.12</junit.version>
     </properties>
@@ -102,8 +102,8 @@
 
         <dependency>
             <groupId>org.osscolib</groupId>
-            <artifactId>osscolib-aimap</artifactId>
-            <version>${osscolib-aimap.version}</version>
+            <artifactId>osscolib-indexmap</artifactId>
+            <version>${osscolib-indexmap.version}</version>
         </dependency>
 
         <dependency>
