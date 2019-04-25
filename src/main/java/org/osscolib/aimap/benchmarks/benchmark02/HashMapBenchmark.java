@@ -24,28 +24,22 @@ import java.util.Map;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
-import org.osscolib.aimap.benchmarks.BenchmarkUtils;
-import org.osscolib.aimap.benchmarks.KeyValue;
 
 public class HashMapBenchmark extends BaseBenchmark02 {
 
     private Map<String,String> map;
-    private KeyValue<String,String>[] entries;
-    private int[] accessOrder;
 
 
     @Setup
     public void setup() throws Exception {
         this.map = new HashMap<>();
-        this.entries = BenchmarkUtils.generateEntries(30);
-        this.accessOrder = BenchmarkUtils.generateAccessOrder(30);
-        putAll(this.map, this.entries);
+        this.map = putAll(this.map);
     }
 
 
     @Benchmark
-    public void benchmark() throws Exception {
-        getAll(this.map, this.entries, this.accessOrder);
+    public String[] benchmark() throws Exception {
+        return getAll(this.map);
     }
 
 }

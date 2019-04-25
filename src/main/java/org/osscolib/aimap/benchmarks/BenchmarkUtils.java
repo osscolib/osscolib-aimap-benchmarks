@@ -39,10 +39,10 @@ public final class BenchmarkUtils {
     }
 
 
-    public static KeyValue[] generateEntries(final int numEntries) {
-        final KeyValue[] entries = new KeyValue[numEntries];
+    public static KeyValue<String,String>[] generateEntries(final int numEntries) {
+        final KeyValue<String,String>[] entries = new KeyValue[numEntries];
         for (int i = 0; i < entries.length; i++) {
-            entries[i] = new KeyValue(generateKey(), generateValue());
+            entries[i] = new KeyValue<>(generateKey(), generateValue());
         }
         return entries;
     }

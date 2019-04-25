@@ -31,7 +31,8 @@ import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
-import org.osscolib.aimap.FluentIndexedMap;
+import org.osscolib.aimap.FluentIndexMap;
+import org.osscolib.aimap.benchmarks.BenchmarkUtils;
 import org.osscolib.aimap.benchmarks.KeyValue;
 
 @Fork(2)
@@ -42,26 +43,52 @@ import org.osscolib.aimap.benchmarks.KeyValue;
 @State(Scope.Benchmark)
 public class BaseBenchmark01 {
 
+    public static final int NUM_ENTRIES = 10000;
+
+    private final int numEntries;
+    private final KeyValue<String,String>[] entries;
 
 
-    public void putAll(final FluentIndexedMap<String,String> map, final KeyValue<String,String>[] entries) {
-
-        FluentIndexedMap<String,String> m = map;
-
-        for (int i = 0; i < entries.length; i++) {
-            m = m.put(entries[i].getKey(), entries[i].getValue());
-        }
-
+    protected BaseBenchmark01() {
+        super();
+        this.numEntries = NUM_ENTRIES;
+        this.entries = BenchmarkUtils.generateEntries(this.numEntries);
     }
 
 
 
-    public void putAll(final Map<String,String> map, final KeyValue<String,String>[] entries) {
 
-        for (int i = 0; i < entries.length; i++) {
-            map.put(entries[i].getKey(), entries[i].getValue());
+    public final int getNumEntries() {
+        return this.numEntries;
+    }
+
+    public KeyValue<String,String>[] getEntries() {
+        return this.entries;
+    }
+
+
+
+
+    public FluentIndexMap<String,String> putAll(final FluentIndexMap<String,String> map) {
+
+        FluentIndexMap<String,String> m = map;
+
+        for (int i = 0; i < this.entries.length; i++) {
+            m = m.put(this.entries[i].getKey(), this.entries[i].getValue());
         }
 
+        return m;
+
+    }
+
+
+    public Map<String,String> putAll(final Map<String,String> map) {
+
+        for (int i = 0; i < entries.length; i++) {
+            map.put(this.entries[i].getKey(), this.entries[i].getValue());
+        }
+
+        return map;
     }
 
 }

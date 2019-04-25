@@ -24,25 +24,21 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
-import org.osscolib.aimap.benchmarks.BenchmarkUtils;
-import org.osscolib.aimap.benchmarks.KeyValue;
 
 public class ConcurrentHashMapBenchmark extends BaseBenchmark01 {
 
     private Map<String,String> map;
-    private KeyValue<String,String>[] entries;
 
 
     @Setup
     public void setup() throws Exception {
         this.map = new ConcurrentHashMap<>();
-        this.entries = BenchmarkUtils.generateEntries(30);
     }
 
 
     @Benchmark
     public void benchmark() throws Exception {
-        putAll(this.map, this.entries);
+        putAll(this.map);
     }
 
 }
