@@ -76,7 +76,7 @@ public class BaseBenchmark00 {
 
     public void test() throws Exception{
 
-        FluentIndexMap<String,String> map = IndexMap.<String,String>build().withMaxNodeSize(100).asFluentMap();
+        FluentIndexMap<String,String> map = IndexMap.<String,String>build().withMediumSize().asFluentMap();
         map = putAll(map);
 
         System.out.println("All initialised. Now pausing.");

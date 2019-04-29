@@ -36,8 +36,26 @@ public class ExpectedOutputTest {
 
 
     @Test
-    public void testIndexMap() throws Exception {
-        final IndexMapDefaultBenchmark bench = new IndexMapDefaultBenchmark();
+    public void testIndexSmallMap() throws Exception {
+        final IndexMapSmallBenchmark bench = new IndexMapSmallBenchmark();
+        bench.setup();
+        final String[] expectedOutput = buildExpectedOutput(bench.getEntries(), bench.getAccessOrder());
+        Assert.assertArrayEquals(expectedOutput, bench.benchmark());
+    }
+
+
+    @Test
+    public void testIndexMediumMap() throws Exception {
+        final IndexMapMediumBenchmark bench = new IndexMapMediumBenchmark();
+        bench.setup();
+        final String[] expectedOutput = buildExpectedOutput(bench.getEntries(), bench.getAccessOrder());
+        Assert.assertArrayEquals(expectedOutput, bench.benchmark());
+    }
+
+
+    @Test
+    public void testIndexLargeMap() throws Exception {
+        final IndexMapLargeBenchmark bench = new IndexMapLargeBenchmark();
         bench.setup();
         final String[] expectedOutput = buildExpectedOutput(bench.getEntries(), bench.getAccessOrder());
         Assert.assertArrayEquals(expectedOutput, bench.benchmark());

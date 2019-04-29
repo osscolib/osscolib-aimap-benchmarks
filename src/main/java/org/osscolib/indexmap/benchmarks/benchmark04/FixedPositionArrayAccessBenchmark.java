@@ -17,28 +17,50 @@
  *
  * =============================================================================
  */
-package org.osscolib.indexmap.benchmarks.benchmark02;
+package org.osscolib.indexmap.benchmarks.benchmark04;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
-import org.osscolib.indexmap.FluentIndexMap;
-import org.osscolib.indexmap.IndexMap;
 
-public class IndexMapDefaultBenchmark extends BaseBenchmark02 {
+public class FixedPositionArrayAccessBenchmark extends BaseBenchmark04 {
 
-    private FluentIndexMap<String,String> map;
+
+
+    public FixedPositionArrayAccessBenchmark() {
+        super();
+    }
+
+    public FixedPositionArrayAccessBenchmark(final int accessAttempts) {
+        super(accessAttempts);
+    }
+
 
 
     @Setup
     public void setup() throws Exception {
-        this.map = IndexMap.<String,String>build().withMaxNodeSize(100).asFluentMap();
-        this.map = putAll(this.map);
+
     }
 
 
     @Benchmark
     public String[] benchmark() throws Exception {
-        return getAll(this.map);
+
+        final Node rootNode = getRootNode();
+        final IndexedAttempt[] indexedAttempts = getIndexedAttempts();
+        final String[] results = new String[indexedAttempts.length];
+        for (int i = 0; i < indexedAttempts.length; i++) {
+            results[i] =
+                    rootNode
+                            .children[indexedAttempts[i].i]
+                            .children[indexedAttempts[i].j]
+                            .children[indexedAttempts[i].k]
+                            .children[indexedAttempts[i].l]
+                            .children[indexedAttempts[i].m]
+                            .children[indexedAttempts[i].n]
+                            .value;
+        }
+        return results;
+
     }
 
 }

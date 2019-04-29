@@ -43,7 +43,7 @@ import org.osscolib.indexmap.benchmarks.KeyValue;
 @State(Scope.Benchmark)
 public class BaseBenchmark02 {
 
-    public static final int NUM_ENTRIES = 50;
+    public static final int NUM_ENTRIES = 10000;
 
     private final int numEntries;
     private final KeyValue<String,String>[] entries;
