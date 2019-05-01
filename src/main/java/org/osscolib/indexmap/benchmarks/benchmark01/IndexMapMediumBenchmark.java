@@ -24,14 +24,14 @@ import org.openjdk.jmh.annotations.Setup;
 import org.osscolib.indexmap.FluentIndexMap;
 import org.osscolib.indexmap.IndexMap;
 
-public class IndexMapDefaultBenchmark extends BaseBenchmark01 {
+public class IndexMapMediumBenchmark extends BaseBenchmark01 {
 
     private FluentIndexMap<String,String> map;
 
 
     @Setup
     public void setup() throws Exception {
-        this.map = IndexMap.<String,String>build().asFluentMap();
+        this.map = IndexMap.<String,String>build().withMediumSize().asFluentMap();
     }
 
 
