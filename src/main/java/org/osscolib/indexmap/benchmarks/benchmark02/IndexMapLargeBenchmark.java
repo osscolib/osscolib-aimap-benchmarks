@@ -21,12 +21,12 @@ package org.osscolib.indexmap.benchmarks.benchmark02;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
-import org.osscolib.indexmap.FluentIndexMap;
+import org.osscolib.indexmap.AtomicHashStore;
 import org.osscolib.indexmap.IndexMap;
 
 public class IndexMapLargeBenchmark extends BaseBenchmark02 {
 
-    private FluentIndexMap<String,String> map;
+    private AtomicHashStore<String,String> map;
 
 
     @Setup

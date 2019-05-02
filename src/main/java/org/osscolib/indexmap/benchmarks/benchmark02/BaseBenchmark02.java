@@ -31,7 +31,7 @@ import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
-import org.osscolib.indexmap.FluentIndexMap;
+import org.osscolib.indexmap.AtomicHashStore;
 import org.osscolib.indexmap.benchmarks.BenchmarkUtils;
 import org.osscolib.indexmap.benchmarks.KeyValue;
 
@@ -74,9 +74,9 @@ public class BaseBenchmark02 {
 
 
 
-    public FluentIndexMap<String,String> putAll(final FluentIndexMap<String,String> map) {
+    public AtomicHashStore<String,String> putAll(final AtomicHashStore<String,String> map) {
 
-        FluentIndexMap<String,String> m = map;
+        AtomicHashStore<String,String> m = map;
 
         for (int i = 0; i < this.entries.length; i++) {
             m = m.put(this.entries[i].getKey(), this.entries[i].getValue());
@@ -98,9 +98,9 @@ public class BaseBenchmark02 {
 
 
 
-    public String[] getAll(final FluentIndexMap<String,String> map) {
+    public String[] getAll(final AtomicHashStore<String,String> map) {
 
-        FluentIndexMap<String,String> m = map;
+        AtomicHashStore<String,String> m = map;
         final String[] result = new String[this.accessOrder.length];
 
         for (int i = 0; i < this.accessOrder.length; i++) {
