@@ -21,7 +21,7 @@ package org.osscolib.indexmap.benchmarks.benchmark02;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.osscolib.indexmap.benchmarks.KeyValue;
+import org.osscolib.indexmap.benchmarks.testutil.KeyValue;
 
 public class ExpectedOutputTest {
 

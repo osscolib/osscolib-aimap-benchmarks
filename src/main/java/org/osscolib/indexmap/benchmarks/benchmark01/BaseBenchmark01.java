@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  *
- *   Copyright (c) 2019, The VEXPREL team (http://www.vexprel.org)
+ *   Copyright (c) 2019, The OSSCOLIB team (http://www.osscolib.org)
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -32,8 +32,8 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
 import org.osscolib.indexmap.AtomicHashStore;
-import org.osscolib.indexmap.benchmarks.BenchmarkUtils;
-import org.osscolib.indexmap.benchmarks.KeyValue;
+import org.osscolib.indexmap.benchmarks.testutil.KeyValue;
+import org.osscolib.indexmap.benchmarks.testutil.TestUtils;
 
 @Fork(2)
 @Warmup(iterations = 2, time = 1, timeUnit = TimeUnit.SECONDS)
@@ -43,24 +43,18 @@ import org.osscolib.indexmap.benchmarks.KeyValue;
 @State(Scope.Benchmark)
 public class BaseBenchmark01 {
 
-    public static final int NUM_ENTRIES = 10000;
+    public static final int NUM_ENTRIES = 100000;
 
-    private final int numEntries;
     private final KeyValue<String,String>[] entries;
 
 
     protected BaseBenchmark01() {
         super();
-        this.numEntries = NUM_ENTRIES;
-        this.entries = BenchmarkUtils.generateEntries(this.numEntries);
+        this.entries = TestUtils.generateStringStringKeyValues(NUM_ENTRIES);
     }
 
 
 
-
-    public final int getNumEntries() {
-        return this.numEntries;
-    }
 
     public KeyValue<String,String>[] getEntries() {
         return this.entries;

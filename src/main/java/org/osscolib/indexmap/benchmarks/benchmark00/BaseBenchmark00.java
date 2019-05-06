@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  *
- *   Copyright (c) 2019, The VEXPREL team (http://www.vexprel.org)
+ *   Copyright (c) 2019, The OSSCOLIB team (http://www.osscolib.org)
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -22,12 +22,13 @@ package org.osscolib.indexmap.benchmarks.benchmark00;
 
 import org.osscolib.indexmap.AtomicHashStore;
 import org.osscolib.indexmap.IndexMap;
-import org.osscolib.indexmap.benchmarks.BenchmarkUtils;
-import org.osscolib.indexmap.benchmarks.KeyValue;
+import org.osscolib.indexmap.benchmarks.testutil.KeyValue;
+import org.osscolib.indexmap.benchmarks.testutil.TestUtils;
 
 public class BaseBenchmark00 {
 
     public static final int NUM_ENTRIES = 100000;
+    public static final int NUM_ACCESES = 100000;
 
     private final int numEntries;
     private final KeyValue<String,String>[] entries;
@@ -37,8 +38,8 @@ public class BaseBenchmark00 {
     protected BaseBenchmark00() {
         super();
         this.numEntries = NUM_ENTRIES;
-        this.entries = BenchmarkUtils.generateEntries(this.numEntries);
-        this.accessOrder = BenchmarkUtils.generateAccessOrder(this.numEntries);
+        this.entries = TestUtils.generateStringStringKeyValues(this.numEntries);
+        this.accessOrder = TestUtils.generateInts(NUM_ACCESES, 0, this.numEntries);
     }
 
 

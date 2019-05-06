@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  *
- *   Copyright (c) 2019, The VEXPREL team (http://www.vexprel.org)
+ *   Copyright (c) 2019, The OSSCOLIB team (http://www.osscolib.org)
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.

@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  *
- *   Copyright (c) 2019, The VEXPREL team (http://www.vexprel.org)
+ *   Copyright (c) 2019, The OSSCOLIB team (http://www.osscolib.org)
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@
  *
  * =============================================================================
  */
-package org.osscolib.indexmap.benchmarks;
+package org.osscolib.indexmap.benchmarks.testutil;
 
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
-public final class BenchmarkUtils {
+public final class TestUtils {
 
 
     public static String generateString(int size) {
@@ -39,8 +39,8 @@ public final class BenchmarkUtils {
     }
 
 
-    public static KeyValue<String,String>[] generateEntries(final int numEntries) {
-        final KeyValue<String,String>[] entries = new KeyValue[numEntries];
+    public static KeyValue<String,String>[] generateStringStringKeyValues(final int numElements) {
+        final KeyValue<String,String>[] entries = new KeyValue[numElements];
         for (int i = 0; i < entries.length; i++) {
             entries[i] = new KeyValue<>(generateKey(), generateValue());
         }
@@ -48,16 +48,16 @@ public final class BenchmarkUtils {
     }
 
 
-    public static int[] generateAccessOrder(final int numEntries) {
-        final int[] accessOrder = new int[numEntries];
+    public static int[] generateInts(final int numElements, final int minValue, final int maxValue) {
+        final int[] accessOrder = new int[numElements];
         for (int i = 0; i < accessOrder.length; i++) {
-            accessOrder[i] = RandomUtils.nextInt(0, numEntries);
+            accessOrder[i] = RandomUtils.nextInt(minValue, maxValue);
         }
         return accessOrder;
     }
 
 
-    private BenchmarkUtils() {
+    private TestUtils() {
         super();
     }
 
