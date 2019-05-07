@@ -17,7 +17,7 @@
  *
  * =============================================================================
  */
-package org.osscolib.indexmap.benchmarks.benchmark02;
+package org.osscolib.atomichash.benchmarks.benchmark01;
 
 
 import java.util.Map;
@@ -31,9 +31,9 @@ import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
-import org.osscolib.indexmap.AtomicHashStore;
-import org.osscolib.indexmap.benchmarks.testutil.KeyValue;
-import org.osscolib.indexmap.benchmarks.testutil.TestUtils;
+import org.osscolib.atomichash.AtomicHashStore;
+import org.osscolib.atomichash.benchmarks.testutil.KeyValue;
+import org.osscolib.atomichash.benchmarks.testutil.TestUtils;
 
 @Fork(2)
 @Warmup(iterations = 2, time = 1, timeUnit = TimeUnit.SECONDS)
@@ -41,19 +41,16 @@ import org.osscolib.indexmap.benchmarks.testutil.TestUtils;
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)
 @State(Scope.Benchmark)
-public class BaseBenchmark02 {
+public class BaseBenchmark01 {
 
     public static final int NUM_ENTRIES = 10000;
-    public static final int NUM_ACCESES = 100000;
 
     private final KeyValue<String,String>[] entries;
-    private final int[] accessOrder;
 
 
-    protected BaseBenchmark02() {
+    protected BaseBenchmark01() {
         super();
         this.entries = TestUtils.generateStringStringKeyValues(NUM_ENTRIES);
-        this.accessOrder = TestUtils.generateInts(NUM_ACCESES, 0, NUM_ENTRIES);
     }
 
 
@@ -63,21 +60,18 @@ public class BaseBenchmark02 {
         return this.entries;
     }
 
-    public int[] getAccessOrder() {
-        return this.accessOrder;
-    }
 
 
 
-    public AtomicHashStore<String,String> putAll(final AtomicHashStore<String,String> map) {
+    public AtomicHashStore<String,String> putAll(final AtomicHashStore<String,String> store) {
 
-        AtomicHashStore<String,String> m = map;
+        AtomicHashStore<String,String> st = store;
 
         for (int i = 0; i < this.entries.length; i++) {
-            m = m.put(this.entries[i].getKey(), this.entries[i].getValue());
+            st = st.put(this.entries[i].getKey(), this.entries[i].getValue());
         }
 
-        return m;
+        return st;
 
     }
 
@@ -89,35 +83,6 @@ public class BaseBenchmark02 {
         }
 
         return map;
-    }
-
-
-
-    public String[] getAll(final AtomicHashStore<String,String> map) {
-
-        AtomicHashStore<String,String> m = map;
-        final String[] result = new String[this.accessOrder.length];
-
-        for (int i = 0; i < this.accessOrder.length; i++) {
-            result[i] = m.get(this.entries[this.accessOrder[i]].getKey());
-        }
-
-        return result;
-
-    }
-
-
-
-    public String[] getAll(final Map<String,String> map) {
-
-        final String[] result = new String[this.accessOrder.length];
-
-        for (int i = 0; i < this.accessOrder.length; i++) {
-            result[i] = map.get(this.entries[this.accessOrder[i]].getKey());
-        }
-
-        return result;
-
     }
 
 }

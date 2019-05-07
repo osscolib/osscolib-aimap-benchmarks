@@ -17,13 +17,13 @@
  *
  * =============================================================================
  */
-package org.osscolib.indexmap.benchmarks.benchmark00;
+package org.osscolib.atomichash.benchmarks.benchmark00;
 
 
-import org.osscolib.indexmap.AtomicHashStore;
-import org.osscolib.indexmap.IndexMap;
-import org.osscolib.indexmap.benchmarks.testutil.KeyValue;
-import org.osscolib.indexmap.benchmarks.testutil.TestUtils;
+import org.osscolib.atomichash.AtomicHashStore;
+import org.osscolib.atomichash.AtomicHash;
+import org.osscolib.atomichash.benchmarks.testutil.KeyValue;
+import org.osscolib.atomichash.benchmarks.testutil.TestUtils;
 
 public class BaseBenchmark00 {
 
@@ -77,7 +77,7 @@ public class BaseBenchmark00 {
 
     public void test() throws Exception{
 
-        AtomicHashStore<String,String> map = IndexMap.<String,String>build().withMediumSize().asFluentMap();
+        AtomicHashStore<String,String> map = AtomicHash.<String,String>build().withMediumSize().asFluentMap();
         map = putAll(map);
 
         System.out.println("All initialised. Now pausing.");

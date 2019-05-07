@@ -23,11 +23,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.osscolib</groupId>
-    <artifactId>osscolib-indexmap-benchmarks</artifactId>
+    <artifactId>osscolib-atomichash-benchmarks</artifactId>
     <version>ci</version>
     <packaging>jar</packaging>
 
-    <name>osscolib-indexmap-benchmarks</name>
+    <name>osscolib-atomichash-benchmarks</name>
 
     <build>
         <plugins>
@@ -93,23 +93,24 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <osscolib-indexmap.version>0.0.1.BUILD-SNAPSHOT</osscolib-indexmap.version>
+        <osscolib-atomichash.version>0.0.1.BUILD-SNAPSHOT</osscolib-atomichash.version>
         <jmh.version>1.21</jmh.version>
         <junit.version>4.12</junit.version>
+        <commons-lang3.version>3.8.1</commons-lang3.version>
     </properties>
 	
     <dependencies>
 
         <dependency>
             <groupId>org.osscolib</groupId>
-            <artifactId>osscolib-indexmap</artifactId>
-            <version>${osscolib-indexmap.version}</version>
+            <artifactId>osscolib-atomichash</artifactId>
+            <version>${osscolib-atomichash.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.8.1</version>
+            <version>${commons-lang3.version}</version>
         </dependency>
 
         <dependency>

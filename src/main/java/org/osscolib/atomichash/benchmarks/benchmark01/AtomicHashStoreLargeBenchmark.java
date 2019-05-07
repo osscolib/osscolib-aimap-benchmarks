@@ -17,28 +17,27 @@
  *
  * =============================================================================
  */
-package org.osscolib.indexmap.benchmarks.benchmark02;
+package org.osscolib.atomichash.benchmarks.benchmark01;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
-import org.osscolib.indexmap.AtomicHashStore;
-import org.osscolib.indexmap.IndexMap;
+import org.osscolib.atomichash.AtomicHashStore;
+import org.osscolib.atomichash.AtomicHash;
 
-public class IndexMapMediumBenchmark extends BaseBenchmark02 {
+public class AtomicHashStoreLargeBenchmark extends BaseBenchmark01 {
 
-    private AtomicHashStore<String,String> map;
+    private AtomicHashStore<String,String> store;
 
 
     @Setup
     public void setup() throws Exception {
-        this.map = IndexMap.<String,String>build().withMediumSize().asFluentMap();
-        this.map = putAll(this.map);
+        this.store = AtomicHash.<String,String>build().withLargeSize().asFluentMap();
     }
 
 
     @Benchmark
-    public String[] benchmark() throws Exception {
-        return getAll(this.map);
+    public void benchmark() throws Exception {
+        putAll(this.store);
     }
 
 }

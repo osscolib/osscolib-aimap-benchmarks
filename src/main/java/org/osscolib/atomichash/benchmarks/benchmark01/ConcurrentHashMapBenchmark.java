@@ -17,7 +17,7 @@
  *
  * =============================================================================
  */
-package org.osscolib.indexmap.benchmarks.benchmark02;
+package org.osscolib.atomichash.benchmarks.benchmark01;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
 
-public class ConcurrentHashMapBenchmark extends BaseBenchmark02 {
+public class ConcurrentHashMapBenchmark extends BaseBenchmark01 {
 
     private Map<String,String> map;
 
@@ -33,13 +33,12 @@ public class ConcurrentHashMapBenchmark extends BaseBenchmark02 {
     @Setup
     public void setup() throws Exception {
         this.map = new ConcurrentHashMap<>();
-        this.map = putAll(this.map);
     }
 
 
     @Benchmark
-    public String[] benchmark() throws Exception {
-        return getAll(this.map);
+    public void benchmark() throws Exception {
+        putAll(this.map);
     }
 
 }

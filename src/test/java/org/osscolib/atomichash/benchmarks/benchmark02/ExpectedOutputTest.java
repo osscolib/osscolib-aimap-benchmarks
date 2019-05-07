@@ -17,11 +17,11 @@
  *
  * =============================================================================
  */
-package org.osscolib.indexmap.benchmarks.benchmark02;
+package org.osscolib.atomichash.benchmarks.benchmark02;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.osscolib.indexmap.benchmarks.testutil.KeyValue;
+import org.osscolib.atomichash.benchmarks.testutil.KeyValue;
 
 public class ExpectedOutputTest {
 
@@ -37,7 +37,7 @@ public class ExpectedOutputTest {
 
     @Test
     public void testIndexSmallMap() throws Exception {
-        final IndexMapSmallBenchmark bench = new IndexMapSmallBenchmark();
+        final AtomicHashStoreSmallBenchmark bench = new AtomicHashStoreSmallBenchmark();
         bench.setup();
         final String[] expectedOutput = buildExpectedOutput(bench.getEntries(), bench.getAccessOrder());
         Assert.assertArrayEquals(expectedOutput, bench.benchmark());
@@ -46,7 +46,7 @@ public class ExpectedOutputTest {
 
     @Test
     public void testIndexMediumMap() throws Exception {
-        final IndexMapMediumBenchmark bench = new IndexMapMediumBenchmark();
+        final AtomicHashStoreMediumBenchmark bench = new AtomicHashStoreMediumBenchmark();
         bench.setup();
         final String[] expectedOutput = buildExpectedOutput(bench.getEntries(), bench.getAccessOrder());
         Assert.assertArrayEquals(expectedOutput, bench.benchmark());
@@ -55,7 +55,7 @@ public class ExpectedOutputTest {
 
     @Test
     public void testIndexLargeMap() throws Exception {
-        final IndexMapLargeBenchmark bench = new IndexMapLargeBenchmark();
+        final AtomicHashStoreLargeBenchmark bench = new AtomicHashStoreLargeBenchmark();
         bench.setup();
         final String[] expectedOutput = buildExpectedOutput(bench.getEntries(), bench.getAccessOrder());
         Assert.assertArrayEquals(expectedOutput, bench.benchmark());

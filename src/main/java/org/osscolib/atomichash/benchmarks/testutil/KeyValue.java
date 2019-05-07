@@ -17,28 +17,41 @@
  *
  * =============================================================================
  */
-package org.osscolib.indexmap.benchmarks.benchmark01;
+package org.osscolib.atomichash.benchmarks.testutil;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.Setup;
+public class KeyValue<K,V> {
 
-public class HashMapBenchmark extends BaseBenchmark01 {
+    private final K key;
+    private final V value;
 
-    private Map<String,String> map;
+    public KeyValue(final K key, final V value) {
+        super();
+        this.key = key;
+        this.value = value;
+    }
 
+    public K getKey() {
+        return this.key;
+    }
 
-    @Setup
-    public void setup() throws Exception {
-        this.map = new HashMap<>();
+    public V getValue() {
+        return this.value;
     }
 
 
-    @Benchmark
-    public void benchmark() throws Exception {
-        putAll(this.map);
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final KeyValue<?, ?> keyValue = (KeyValue<?, ?>) o;
+        return Objects.equals(key, keyValue.key) &&
+                Objects.equals(value, keyValue.value);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(key, value);
+    }
 }
