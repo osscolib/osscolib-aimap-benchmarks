@@ -20,8 +20,8 @@
 package org.osscolib.atomichash.benchmarks.benchmark00;
 
 
-import org.osscolib.atomichash.AtomicHashStore;
 import org.osscolib.atomichash.AtomicHash;
+import org.osscolib.atomichash.AtomicHashStore;
 import org.osscolib.atomichash.benchmarks.testutil.KeyValue;
 import org.osscolib.atomichash.benchmarks.testutil.TestUtils;
 

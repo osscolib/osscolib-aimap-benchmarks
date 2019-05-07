@@ -21,8 +21,8 @@ package org.osscolib.atomichash.benchmarks.benchmark01;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
-import org.osscolib.atomichash.AtomicHashStore;
 import org.osscolib.atomichash.AtomicHash;
+import org.osscolib.atomichash.AtomicHashStore;
 
 public class AtomicHashStoreLargeBenchmark extends BaseBenchmark01 {
 
