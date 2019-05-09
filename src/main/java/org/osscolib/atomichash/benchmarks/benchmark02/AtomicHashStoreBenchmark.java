@@ -21,17 +21,16 @@ package org.osscolib.atomichash.benchmarks.benchmark02;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
-import org.osscolib.atomichash.AtomicHash;
 import org.osscolib.atomichash.AtomicHashStore;
 
-public class AtomicHashStoreMediumBenchmark extends BaseBenchmark02 {
+public class AtomicHashStoreBenchmark extends BaseBenchmark02 {
 
     private AtomicHashStore<String,String> store;
 
 
     @Setup
     public void setup() throws Exception {
-        this.store = AtomicHash.<String,String>build().withMediumSize().asFluentMap();
+        this.store = new AtomicHashStore<>();
         this.store = putAll(this.store);
     }
 

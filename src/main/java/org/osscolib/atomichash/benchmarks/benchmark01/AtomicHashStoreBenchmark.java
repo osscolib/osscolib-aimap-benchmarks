@@ -17,28 +17,26 @@
  *
  * =============================================================================
  */
-package org.osscolib.atomichash.benchmarks.benchmark02;
+package org.osscolib.atomichash.benchmarks.benchmark01;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
-import org.osscolib.atomichash.AtomicHash;
 import org.osscolib.atomichash.AtomicHashStore;
 
-public class AtomicHashStoreSmallBenchmark extends BaseBenchmark02 {
+public class AtomicHashStoreBenchmark extends BaseBenchmark01 {
 
     private AtomicHashStore<String,String> store;
 
 
     @Setup
     public void setup() throws Exception {
-        this.store = AtomicHash.<String,String>build().withSmallSize().asFluentMap();
-        this.store = putAll(this.store);
+        this.store = new AtomicHashStore<>();
     }
 
 
     @Benchmark
-    public String[] benchmark() throws Exception {
-        return getAll(this.store);
+    public void benchmark() throws Exception {
+        putAll(this.store);
     }
 
 }

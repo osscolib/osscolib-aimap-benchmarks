@@ -32,8 +32,8 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
 import org.osscolib.atomichash.AtomicHashStore;
-import org.osscolib.atomichash.benchmarks.testutil.KeyValue;
-import org.osscolib.atomichash.benchmarks.testutil.TestUtils;
+import org.osscolib.atomichash.KeyValue;
+import org.osscolib.atomichash.TestUtils;
 
 @Fork(2)
 @Warmup(iterations = 2, time = 1, timeUnit = TimeUnit.SECONDS)
@@ -50,7 +50,7 @@ public class BaseBenchmark01 {
 
     protected BaseBenchmark01() {
         super();
-        this.entries = TestUtils.generateStringStringKeyValues(NUM_ENTRIES);
+        this.entries = TestUtils.generateStringStringKeyValues(NUM_ENTRIES,0,0);
     }
 
 

@@ -20,10 +20,9 @@
 package org.osscolib.atomichash.benchmarks.benchmark00;
 
 
-import org.osscolib.atomichash.AtomicHash;
 import org.osscolib.atomichash.AtomicHashStore;
-import org.osscolib.atomichash.benchmarks.testutil.KeyValue;
-import org.osscolib.atomichash.benchmarks.testutil.TestUtils;
+import org.osscolib.atomichash.KeyValue;
+import org.osscolib.atomichash.TestUtils;
 
 public class BaseBenchmark00 {
 
@@ -38,7 +37,7 @@ public class BaseBenchmark00 {
     protected BaseBenchmark00() {
         super();
         this.numEntries = NUM_ENTRIES;
-        this.entries = TestUtils.generateStringStringKeyValues(this.numEntries);
+        this.entries = TestUtils.generateStringStringKeyValues(this.numEntries,0,0);
         this.accessOrder = TestUtils.generateInts(NUM_ACCESES, 0, this.numEntries);
     }
 
@@ -77,7 +76,7 @@ public class BaseBenchmark00 {
 
     public void test() throws Exception{
 
-        AtomicHashStore<String,String> map = AtomicHash.<String,String>build().withMediumSize().asFluentMap();
+        AtomicHashStore<String,String> map = new AtomicHashStore<>();
         map = putAll(map);
 
         System.out.println("All initialised. Now pausing.");

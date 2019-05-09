@@ -21,7 +21,7 @@ package org.osscolib.atomichash.benchmarks.benchmark02;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.osscolib.atomichash.benchmarks.testutil.KeyValue;
+import org.osscolib.atomichash.KeyValue;
 
 public class ExpectedOutputTest {
 
@@ -36,26 +36,8 @@ public class ExpectedOutputTest {
 
 
     @Test
-    public void testIndexSmallMap() throws Exception {
-        final AtomicHashStoreSmallBenchmark bench = new AtomicHashStoreSmallBenchmark();
-        bench.setup();
-        final String[] expectedOutput = buildExpectedOutput(bench.getEntries(), bench.getAccessOrder());
-        Assert.assertArrayEquals(expectedOutput, bench.benchmark());
-    }
-
-
-    @Test
-    public void testIndexMediumMap() throws Exception {
-        final AtomicHashStoreMediumBenchmark bench = new AtomicHashStoreMediumBenchmark();
-        bench.setup();
-        final String[] expectedOutput = buildExpectedOutput(bench.getEntries(), bench.getAccessOrder());
-        Assert.assertArrayEquals(expectedOutput, bench.benchmark());
-    }
-
-
-    @Test
-    public void testIndexLargeMap() throws Exception {
-        final AtomicHashStoreLargeBenchmark bench = new AtomicHashStoreLargeBenchmark();
+    public void testAtomicHashStore() throws Exception {
+        final AtomicHashStoreBenchmark bench = new AtomicHashStoreBenchmark();
         bench.setup();
         final String[] expectedOutput = buildExpectedOutput(bench.getEntries(), bench.getAccessOrder());
         Assert.assertArrayEquals(expectedOutput, bench.benchmark());
@@ -74,6 +56,24 @@ public class ExpectedOutputTest {
     @Test
     public void testHashMap() throws Exception {
         final HashMapBenchmark bench = new HashMapBenchmark();
+        bench.setup();
+        final String[] expectedOutput = buildExpectedOutput(bench.getEntries(), bench.getAccessOrder());
+        Assert.assertArrayEquals(expectedOutput, bench.benchmark());
+    }
+
+
+    @Test
+    public void testLinkedHashMap() throws Exception {
+        final LinkedHashMapBenchmark bench = new LinkedHashMapBenchmark();
+        bench.setup();
+        final String[] expectedOutput = buildExpectedOutput(bench.getEntries(), bench.getAccessOrder());
+        Assert.assertArrayEquals(expectedOutput, bench.benchmark());
+    }
+
+
+    @Test
+    public void testTreeMap() throws Exception {
+        final TreeMapBenchmark bench = new TreeMapBenchmark();
         bench.setup();
         final String[] expectedOutput = buildExpectedOutput(bench.getEntries(), bench.getAccessOrder());
         Assert.assertArrayEquals(expectedOutput, bench.benchmark());
