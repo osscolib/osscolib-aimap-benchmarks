@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Setup;
 
 public class ConcurrentHashMapBenchmark extends BaseBenchmark02 {
@@ -30,7 +31,7 @@ public class ConcurrentHashMapBenchmark extends BaseBenchmark02 {
     private Map<String,String> map;
 
 
-    @Setup
+    @Setup(value = Level.Invocation)
     public void setup() throws Exception {
         this.map = new ConcurrentHashMap<>();
         this.map = putAll(this.map);

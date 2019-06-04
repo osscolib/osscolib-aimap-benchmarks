@@ -23,6 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Setup;
 
 public class LinkedHashMapBenchmark extends BaseBenchmark01 {
@@ -30,14 +31,20 @@ public class LinkedHashMapBenchmark extends BaseBenchmark01 {
     private Map<String,String> map;
 
 
-    @Setup
+    @Setup(value = Level.Invocation)
     public void setup() throws Exception {
         this.map = new LinkedHashMap<>();
     }
 
 
     @Benchmark
-    public void benchmark() throws Exception {
+    public void benchmarkPut() throws Exception {
+        put(this.map);
+    }
+
+
+    @Benchmark
+    public void benchmarkPutAll() throws Exception {
         putAll(this.map);
     }
 

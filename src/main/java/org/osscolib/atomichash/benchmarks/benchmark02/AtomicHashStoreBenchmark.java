@@ -20,6 +20,7 @@
 package org.osscolib.atomichash.benchmarks.benchmark02;
 
 import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Setup;
 import org.osscolib.atomichash.AtomicHashStore;
 
@@ -28,7 +29,7 @@ public class AtomicHashStoreBenchmark extends BaseBenchmark02 {
     private AtomicHashStore<String,String> store;
 
 
-    @Setup
+    @Setup(value = Level.Invocation)
     public void setup() throws Exception {
         this.store = new AtomicHashStore<>();
         this.store = putAll(this.store);

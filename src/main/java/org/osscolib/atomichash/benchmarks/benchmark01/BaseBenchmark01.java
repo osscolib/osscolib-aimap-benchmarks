@@ -20,6 +20,7 @@
 package org.osscolib.atomichash.benchmarks.benchmark01;
 
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -45,43 +46,59 @@ public class BaseBenchmark01 {
 
     public static final int NUM_ENTRIES = 10000;
 
-    private final KeyValue<String,String>[] entries;
+    private final KeyValue<String,String>[] entriesArray;
+    private final Map<String,String> entriesMap;
 
 
     protected BaseBenchmark01() {
         super();
-        this.entries = TestUtils.generateStringStringKeyValues(NUM_ENTRIES,0,0);
+        this.entriesArray = TestUtils.generateStringStringKeyValues(NUM_ENTRIES,0,0);
+        this.entriesMap = new HashMap<>();
+        for (int i = 0; i < this.entriesArray.length; i++) {
+            this.entriesMap.put(this.entriesArray[i].getKey(), this.entriesArray[i].getValue());
+        }
     }
 
 
 
 
-    public KeyValue<String,String>[] getEntries() {
-        return this.entries;
+    public KeyValue<String,String>[] getEntriesArray() {
+        return this.entriesArray;
     }
 
+    public Map<String, String> getEntriesMap() {
+        return entriesMap;
+    }
+
+
+
+    public AtomicHashStore<String,String> put(final AtomicHashStore<String,String> store) {
+        AtomicHashStore<String,String> st = store;
+        for (int i = 0; i < this.entriesArray.length; i++) {
+            st = st.put(this.entriesArray[i].getKey(), this.entriesArray[i].getValue());
+        }
+        return st;
+    }
+
+
+    public Map<String,String> put(final Map<String,String> map) {
+        for (int i = 0; i < entriesArray.length; i++) {
+            map.put(this.entriesArray[i].getKey(), this.entriesArray[i].getValue());
+        }
+        return map;
+    }
 
 
 
     public AtomicHashStore<String,String> putAll(final AtomicHashStore<String,String> store) {
-
         AtomicHashStore<String,String> st = store;
-
-        for (int i = 0; i < this.entries.length; i++) {
-            st = st.put(this.entries[i].getKey(), this.entries[i].getValue());
-        }
-
+        st = st.putAll(this.entriesMap);
         return st;
-
     }
 
 
     public Map<String,String> putAll(final Map<String,String> map) {
-
-        for (int i = 0; i < entries.length; i++) {
-            map.put(this.entries[i].getKey(), this.entries[i].getValue());
-        }
-
+        map.putAll(this.entriesMap);
         return map;
     }
 

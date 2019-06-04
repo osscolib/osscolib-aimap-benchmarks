@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Setup;
 
 public class TreeMapBenchmark extends BaseBenchmark01 {
@@ -30,14 +31,20 @@ public class TreeMapBenchmark extends BaseBenchmark01 {
     private Map<String,String> map;
 
 
-    @Setup
+    @Setup(value = Level.Invocation)
     public void setup() throws Exception {
         this.map = new TreeMap<>();
     }
 
 
     @Benchmark
-    public void benchmark() throws Exception {
+    public void benchmarkPut() throws Exception {
+        put(this.map);
+    }
+
+
+    @Benchmark
+    public void benchmarkPutAll() throws Exception {
         putAll(this.map);
     }
 

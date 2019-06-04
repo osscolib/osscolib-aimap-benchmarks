@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Setup;
 
 public class HashMapBenchmark extends BaseBenchmark02 {
@@ -30,7 +31,7 @@ public class HashMapBenchmark extends BaseBenchmark02 {
     private Map<String,String> map;
 
 
-    @Setup
+    @Setup(value = Level.Invocation)
     public void setup() throws Exception {
         this.map = new HashMap<>();
         this.map = putAll(this.map);
