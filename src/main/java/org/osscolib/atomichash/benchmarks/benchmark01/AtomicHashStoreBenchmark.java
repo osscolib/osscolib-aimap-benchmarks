@@ -36,14 +36,14 @@ public class AtomicHashStoreBenchmark extends BaseBenchmark01 {
 
 
     @Benchmark
-    public void benchmarkPut() throws Exception {
-        put(this.store);
+    public AtomicHashStore<String,String> benchmarkPut() throws Exception {
+        return put(this.store);
     }
 
 
     @Benchmark
-    public void benchmarkPutAll() throws Exception {
-        putAll(this.store);
+    public AtomicHashStore<String,String> benchmarkPutAll() throws Exception {
+        return putAll(this.store);
     }
 
 }

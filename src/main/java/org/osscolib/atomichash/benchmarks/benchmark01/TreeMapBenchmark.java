@@ -38,14 +38,14 @@ public class TreeMapBenchmark extends BaseBenchmark01 {
 
 
     @Benchmark
-    public void benchmarkPut() throws Exception {
-        put(this.map);
+    public Map<String,String> benchmarkPut() throws Exception {
+        return put(this.map);
     }
 
 
     @Benchmark
-    public void benchmarkPutAll() throws Exception {
-        putAll(this.map);
+    public Map<String,String> benchmarkPutAll() throws Exception {
+        return putAll(this.map);
     }
 
 }
