@@ -98,7 +98,7 @@ public class BaseBenchmark00 {
         System.out.println("PutAll operations starting.");
 
         for (int i = 0; i < 1000; i++) {
-            AtomicHashStore<String,String> map = new AtomicHashStore<>();
+            AtomicHashStore<String,String> map = AtomicHashStore.of();
             map = map.putAll(this.entriesMap);
         }
 
@@ -114,7 +114,7 @@ public class BaseBenchmark00 {
         System.out.println("Put operations starting.");
 
         for (int i = 0; i < 1000; i++) {
-            AtomicHashStore<String,String> map = new AtomicHashStore<>();
+            AtomicHashStore<String,String> map = AtomicHashStore.of();
             for (final Map.Entry<String,String> entry : this.entriesMap.entrySet()) {
                 map = map.put(entry.getKey(), entry.getValue());
             }

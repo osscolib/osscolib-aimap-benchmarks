@@ -31,7 +31,7 @@ public class AtomicHashStoreBenchmark extends BaseBenchmark02 {
 
     @Setup(value = Level.Invocation)
     public void setup() throws Exception {
-        this.store = new AtomicHashStore<>();
+        this.store = AtomicHashStore.of();
         this.store = putAll(this.store);
     }
 
