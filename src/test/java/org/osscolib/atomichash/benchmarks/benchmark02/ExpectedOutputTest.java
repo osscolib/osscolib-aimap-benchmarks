@@ -21,7 +21,7 @@ package org.osscolib.atomichash.benchmarks.benchmark02;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.osscolib.atomichash.KeyValue;
+import org.osscolib.atomichash.benchmarks.utils.KeyValue;
 
 public class ExpectedOutputTest {
 

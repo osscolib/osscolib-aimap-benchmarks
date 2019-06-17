@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.osscolib.atomichash.AtomicHashStore;
-import org.osscolib.atomichash.KeyValue;
-import org.osscolib.atomichash.TestUtils;
+import org.osscolib.atomichash.benchmarks.utils.KeyValue;
+import org.osscolib.atomichash.benchmarks.utils.TestUtils;
 
 public class BaseBenchmark00 {
 

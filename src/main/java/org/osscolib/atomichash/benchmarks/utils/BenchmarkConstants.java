@@ -1,3 +1,5 @@
+package org.osscolib.atomichash.benchmarks.utils;
+
 /*
  * =============================================================================
  *
@@ -17,41 +19,23 @@
  *
  * =============================================================================
  */
-package org.osscolib.atomichash;
+public final class BenchmarkConstants {
 
-import java.util.Objects;
 
-public class KeyValue<K,V> {
+    public static final int SINGLE_THREAD_TEST_NUM_THREADS = 1;
+    public static final int SINGLE_THREAD_TEST_NUM_EXECUTIONS_IN_BENCHMARK = 1000;
 
-    private final K key;
-    private final V value;
+    public static final int CONCURRENT2_TEST_NUM_THREADS = 2;
+    public static final int CONCURRENT2_TEST_NUM_EXECUTIONS_IN_BENCHMARK = 500; // times num_threads for each map
 
-    public KeyValue(final K key, final V value) {
+    public static final int CONCURRENT4_TEST_NUM_THREADS = 4;
+    public static final int CONCURRENT4_TEST_NUM_EXECUTIONS_IN_BENCHMARK = 250; // times num_threads for each map
+
+
+
+
+    private BenchmarkConstants() {
         super();
-        this.key = key;
-        this.value = value;
     }
 
-    public K getKey() {
-        return this.key;
-    }
-
-    public V getValue() {
-        return this.value;
-    }
-
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        final KeyValue<?, ?> keyValue = (KeyValue<?, ?>) o;
-        return Objects.equals(key, keyValue.key) &&
-                Objects.equals(value, keyValue.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(key, value);
-    }
 }

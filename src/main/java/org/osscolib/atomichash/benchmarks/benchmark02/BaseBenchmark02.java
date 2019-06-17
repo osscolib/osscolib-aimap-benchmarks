@@ -32,8 +32,8 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
 import org.osscolib.atomichash.AtomicHashStore;
-import org.osscolib.atomichash.KeyValue;
-import org.osscolib.atomichash.TestUtils;
+import org.osscolib.atomichash.benchmarks.utils.KeyValue;
+import org.osscolib.atomichash.benchmarks.utils.TestUtils;
 
 @Fork(2)
 @Warmup(iterations = 2, time = 1, timeUnit = TimeUnit.SECONDS)

@@ -17,11 +17,10 @@
  *
  * =============================================================================
  */
-package org.osscolib.atomichash;
+package org.osscolib.atomichash.benchmarks.utils;
 
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -129,39 +128,6 @@ public final class TestUtils {
             accessOrder[i] = RandomUtils.nextInt(minValue, maxValue);
         }
         return accessOrder;
-    }
-
-
-    static final class HashComparator implements Comparator<KeyValue<String,String>> {
-
-        static final HashComparator INSTANCE = new HashComparator();
-
-        @Override
-        public int compare(final KeyValue<String, String> o1, final KeyValue<String, String> o2) {
-            // This emulates Entry#compareTo
-
-            final int h1 = HashEntry.hash(o1.getKey());
-            final int h2 = HashEntry.hash(o2.getKey());
-
-            if (h1 == h2) {
-                return Integer.compare(
-                        System.identityHashCode(o1.getKey()),
-                        System.identityHashCode(o2.getKey()));
-            }
-
-            Level level = Level.LEVEL0;
-            while (true) {
-                final int s1 = level.pos(h1);
-                final int s2 = level.pos(h2);
-                final int comp = Integer.compare(s1, s2);
-                if (comp != 0) {
-                    return comp;
-                }
-                level = level.next;
-            }
-
-        }
-
     }
 
 
