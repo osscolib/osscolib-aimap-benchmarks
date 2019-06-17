@@ -45,6 +45,9 @@ public final class BenchmarkMaps {
     final AtomicInteger k = new AtomicInteger(0);
 
 
+    static BenchmarkMaps createPool
+
+
     public BenchmarkMaps(int mapPoolSize, int numThreads, int initialMapSize,
                          final BenchmarkValues values, final Supplier<Map<String,String>> mapSupplier) {
         super();
@@ -65,30 +68,22 @@ public final class BenchmarkMaps {
             this.mapPool[i] = this.mapSupplier.get();
         }
         if (this.initialMapSize > 0) {
-            System.out.println("*");
             final Map<String,String> entries = new HashMap<>();
             for (int j = 0; j < this.initialMapSize; j++) {
                 final KeyValue<String, String> kv = this.values.produceKeyValue();
                 entries.put(kv.key, kv.value);
                 this.mapKeys[j] = kv.key;
             }
-            System.out.println("&&");
 
             this.mapPool[0].putAll(entries);
 
             for (int i = 1; i < this.mapPool.length; i++) {
-                if (this.mapPool[i] instanceof Cloneable) {
-                    this.mapPool[i] = ((Cloneable)this.mapPool[0]).clone(); // TODO NOT NEEDED, Get benchmarks are fine using a single Map (at least one per iteration? per thread?
-                } else {
-                    this.mapPool[i].putAll(entries);
-                }
+                this.mapPool[i].putAll(entries);
             }
 
-            System.out.println("a");
             final ArrayList<String> keys = new ArrayList<>(Arrays.asList(this.mapKeys));
             Collections.shuffle(keys);
             this.mapKeys = keys.toArray(this.mapKeys);
-            System.out.println("b");
         }
     }
 
