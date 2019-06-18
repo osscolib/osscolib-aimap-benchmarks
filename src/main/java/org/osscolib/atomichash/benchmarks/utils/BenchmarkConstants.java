@@ -22,14 +22,14 @@ package org.osscolib.atomichash.benchmarks.utils;
 public final class BenchmarkConstants {
 
 
-    public static final int SINGLE_THREAD_TEST_NUM_THREADS = 1;
-    public static final int SINGLE_THREAD_TEST_NUM_EXECUTIONS_IN_BENCHMARK = 1000;
+    public static final int THREADS1_TEST_NUM_THREADS = 1;
+    public static final int THREADS1_TEST_NUM_EXECUTIONS_IN_BENCHMARK = 1000;
 
-    public static final int CONCURRENT2_TEST_NUM_THREADS = 2;
-    public static final int CONCURRENT2_TEST_NUM_EXECUTIONS_IN_BENCHMARK = 500; // times num_threads for each map
+    public static final int THREADS2_TEST_NUM_THREADS = 2;
+    public static final int THREADS2_TEST_NUM_EXECUTIONS_IN_BENCHMARK = 500; // times num_threads for each map
 
-    public static final int CONCURRENT4_TEST_NUM_THREADS = 4;
-    public static final int CONCURRENT4_TEST_NUM_EXECUTIONS_IN_BENCHMARK = 250; // times num_threads for each map
+    public static final int THREADS4_TEST_NUM_THREADS = 4;
+    public static final int THREADS4_TEST_NUM_EXECUTIONS_IN_BENCHMARK = 250; // times num_threads for each map
 
 
 

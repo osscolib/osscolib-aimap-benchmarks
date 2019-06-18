@@ -33,6 +33,8 @@ public final class BenchmarkMaps {
     // the fact that a benchmark modifies the data in a Map does not influence the results of the subsequent
     // benchmarks (map modification times usually depend on the amount of data already present in the Map)
 
+    private final boolean pool;
+
     private final Supplier<Map<String,String>> mapSupplier;
     private final Map<String,String>[] mapPool;
     private final int initialMapSize;
@@ -45,12 +47,20 @@ public final class BenchmarkMaps {
     final AtomicInteger k = new AtomicInteger(0);
 
 
-    static BenchmarkMaps createPool
+    public static BenchmarkMaps createSingleMap(int initialMapSize, final BenchmarkValues values, final Supplier<Map<String,String>> mapSupplier) {
+        return new BenchmarkMaps(false, 1, -1, initialMapSize, values, mapSupplier);
+    }
+
+    public static BenchmarkMaps createPool(int mapPoolSize, int numThreads, int initialMapSize,
+                                    final BenchmarkValues values, final Supplier<Map<String,String>> mapSupplier) {
+        return new BenchmarkMaps(true, mapPoolSize, numThreads, initialMapSize, values, mapSupplier);
+    }
 
 
-    public BenchmarkMaps(int mapPoolSize, int numThreads, int initialMapSize,
+    private BenchmarkMaps(final boolean pool, int mapPoolSize, int numThreads, int initialMapSize,
                          final BenchmarkValues values, final Supplier<Map<String,String>> mapSupplier) {
         super();
+        this.pool = pool;
         this.numThreads = numThreads;
         this.initialMapSize = initialMapSize;
         this.mapPool = new Map[mapPoolSize];
@@ -62,11 +72,19 @@ public final class BenchmarkMaps {
 
 
     public void reset() {
-        this.m.set(0);
+
         this.k.set(0);
-        for (int i = 0; i < this.mapPool.length; i++) {
-            this.mapPool[i] = this.mapSupplier.get();
+
+        if (this.pool) {
+            this.m.set(0);
+            for (int i = 0; i < this.mapPool.length; i++) {
+                this.mapPool[i] = this.mapSupplier.get();
+            }
+        } else {
+            // If there is no pool, then there is only one map
+            this.mapPool[0] = this.mapSupplier.get();
         }
+
         if (this.initialMapSize > 0) {
             final Map<String,String> entries = new HashMap<>();
             for (int j = 0; j < this.initialMapSize; j++) {
@@ -89,6 +107,10 @@ public final class BenchmarkMaps {
 
 
     public Map<String,String> produceMap() {
+
+        if (!this.pool) {
+            return this.mapPool[0];
+        }
 
         // We will try to send the same map to each thread once in order to have some contention. No guarantee though.
         final int m = (this.m.getAndIncrement() / this.numThreads);

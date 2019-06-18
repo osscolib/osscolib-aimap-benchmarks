@@ -20,6 +20,7 @@
 package org.osscolib.atomichash.benchmarks;
 
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -51,18 +52,18 @@ import org.osscolib.atomichash.benchmarks.utils.KeyValue;
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)
 @State(Scope.Benchmark)
-@Threads(BenchmarkConstants.CONCURRENT2_TEST_NUM_THREADS)
-public abstract class PutConcurrent2Benchmark {
+@Threads(BenchmarkConstants.THREADS4_TEST_NUM_THREADS)
+public abstract class Threads4PutBenchmark {
 
     protected final BenchmarkValues benchmarkValues = new BenchmarkValues();
     protected final BenchmarkMaps benchmarkMaps;
 
 
 
-    protected PutConcurrent2Benchmark(final Supplier<Map<String,String>> mapSupplier) {
+    protected Threads4PutBenchmark(final Supplier<Map<String,String>> mapSupplier) {
         super();
-        this.benchmarkMaps = new BenchmarkMaps(
-                100000, BenchmarkConstants.CONCURRENT2_TEST_NUM_THREADS, 0, benchmarkValues, mapSupplier);
+        this.benchmarkMaps = BenchmarkMaps.createPool(
+                100000, BenchmarkConstants.THREADS4_TEST_NUM_THREADS, 0, benchmarkValues, mapSupplier);
     }
 
 
@@ -75,17 +76,17 @@ public abstract class PutConcurrent2Benchmark {
     }
 
 
-    private static abstract class AtomicPutBenchmark extends PutConcurrent2Benchmark {
+    private static abstract class AtomicBenchmark extends Threads4PutBenchmark {
 
-        protected AtomicPutBenchmark(final Supplier<Map<String, String>> mapSupplier) {
+        protected AtomicBenchmark(final Supplier<Map<String, String>> mapSupplier) {
             super(mapSupplier);
         }
 
         @Benchmark
-        public Map<String,String> atomicPut() throws Exception {
+        public Map<String,String> atomic() throws Exception {
             final Map<String,String> m = this.benchmarkMaps.produceMap();
             KeyValue<String, String> kv;
-            for (int n = 0; n < BenchmarkConstants.CONCURRENT2_TEST_NUM_EXECUTIONS_IN_BENCHMARK; n++) { // Total inserted entries will be this * num_threads
+            for (int n = 0; n < BenchmarkConstants.THREADS4_TEST_NUM_EXECUTIONS_IN_BENCHMARK; n++) { // Total inserted entries will be this * num_threads
                 kv = this.benchmarkValues.produceKeyValue();
                 m.put(kv.key, kv.value);
             }
@@ -95,17 +96,17 @@ public abstract class PutConcurrent2Benchmark {
     }
 
 
-    private static abstract class SynchronizedPutBenchmark extends PutConcurrent2Benchmark {
+    private static abstract class SynchronizedBenchmark extends Threads4PutBenchmark {
 
-        protected SynchronizedPutBenchmark(final Supplier<Map<String, String>> mapSupplier) {
+        protected SynchronizedBenchmark(final Supplier<Map<String, String>> mapSupplier) {
             super(mapSupplier);
         }
 
         @Benchmark
-        public Map<String,String> synchronizedPut() throws Exception {
+        public Map<String,String> synch() throws Exception {
             final Map<String,String> m = this.benchmarkMaps.produceMap();
             KeyValue<String, String> kv;
-            for (int n = 0; n < BenchmarkConstants.CONCURRENT2_TEST_NUM_EXECUTIONS_IN_BENCHMARK; n++) {
+            for (int n = 0; n < BenchmarkConstants.THREADS4_TEST_NUM_EXECUTIONS_IN_BENCHMARK; n++) {
                 kv = this.benchmarkValues.produceKeyValue();
                 synchronized (m) {
                     m.put(kv.key, kv.value);
@@ -119,29 +120,36 @@ public abstract class PutConcurrent2Benchmark {
 
 
 
-    public static class AtomicHashMapPutBenchmark extends AtomicPutBenchmark {
-        public AtomicHashMapPutBenchmark() {
+    public static class AtomicHashMapBenchmark extends AtomicBenchmark {
+        public AtomicHashMapBenchmark() {
             super(() -> new AtomicHashMap<>());
         }
     }
 
 
-    public static class ConcurrentHashMapPutBenchmark extends AtomicPutBenchmark {
-        public ConcurrentHashMapPutBenchmark() {
+    public static class ConcurrentHashMapBenchmark extends AtomicBenchmark {
+        public ConcurrentHashMapBenchmark() {
             super(() -> new ConcurrentHashMap<>());
         }
     }
 
 
-    public static class HashMapPutBenchmark extends SynchronizedPutBenchmark {
-        public HashMapPutBenchmark() {
+    public static class SynchronizedHashMapBenchmark extends AtomicBenchmark {
+        public SynchronizedHashMapBenchmark() {
+            super(() -> Collections.synchronizedMap(new HashMap<>()));
+        }
+    }
+
+
+    public static class HashMapBenchmark extends SynchronizedBenchmark {
+        public HashMapBenchmark() {
             super(() -> new HashMap<>());
         }
     }
 
 
-    public static class LinkedHashMapPutBenchmark extends SynchronizedPutBenchmark {
-        public LinkedHashMapPutBenchmark() {
+    public static class LinkedHashMapBenchmark extends SynchronizedBenchmark {
+        public LinkedHashMapBenchmark() {
             super(() -> new LinkedHashMap<>());
         }
     }
