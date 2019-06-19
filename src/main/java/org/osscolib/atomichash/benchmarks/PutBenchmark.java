@@ -35,7 +35,6 @@ import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
-import org.openjdk.jmh.annotations.Param;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
@@ -45,13 +44,16 @@ import org.openjdk.jmh.infra.Blackhole;
 import org.osscolib.atomichash.AtomicHashMap;
 import org.osscolib.atomichash.benchmarks.utils.BenchmarkMaps;
 import org.osscolib.atomichash.benchmarks.utils.BenchmarkValues;
+import org.osscolib.atomichash.benchmarks.utils.KeyValue;
 
 @Fork(2)
 @Warmup(iterations = 2, time = 1, timeUnit = TimeUnit.SECONDS)
 @Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class GetBenchmark {
+public class PutBenchmark {
+
+    private final static int AVERAGE_NUM_OF_ENTRIES_ADDED_TO_EACH_MAP = 1000;
 
 
     @State(Scope.Benchmark)
@@ -59,7 +61,7 @@ public class GetBenchmark {
 
         final Supplier<Map<String,String>> mapSupplier;
 
-        @Param({"10", "100", "1000"}) int mapInitialSize;
+        BenchmarkValues benchmarkValues;
         BenchmarkMaps benchmarkMaps;
 
         protected MapState(final Supplier<Map<String,String>> mapSupplier) {
@@ -69,9 +71,8 @@ public class GetBenchmark {
 
         @Setup(value = Level.Trial)
         public void initMaps() throws Exception {
-            // We need to delay this until Trial (i.e. not do it in the constructor) because attributes annotated
-            // with @Param are not guaranteed to have a value at State object constructor execution time.
-            this.benchmarkMaps = BenchmarkMaps.createSingleMap(this.mapInitialSize, new BenchmarkValues(), this.mapSupplier);
+            this.benchmarkValues = new BenchmarkValues();
+            this.benchmarkMaps = BenchmarkMaps.createPool(100000, 0, this.benchmarkValues, this.mapSupplier);
         }
 
         @Setup(value = Level.Iteration)
@@ -121,37 +122,37 @@ public class GetBenchmark {
     // We need the blackhole to consume state data in all benchmarks in order being able to subtract the control
     // times, as we need the benchmark methods to contain ALL the code in the control.
 
-    private static String doAtomicGet(final Blackhole blackhole, final MapState state) {
-        final Map<String,String> map = state.benchmarkMaps.getMap();
-        final String key = state.benchmarkMaps.produceKey();
-        final String result = map.get(key);
+    private static String doAtomicPut(final Blackhole blackhole, final MapState state, final int numThreads) {
+        final Map<String,String> map = state.benchmarkMaps.produceMap(AVERAGE_NUM_OF_ENTRIES_ADDED_TO_EACH_MAP, numThreads);
+        final KeyValue<String,String> kv = state.benchmarkValues.produceKeyValue();
+        final String result = map.put(kv.key, kv.value);
+        blackhole.consume(kv);
         blackhole.consume(map);
-        blackhole.consume(key);
         return result;
     }
 
-    private static String doSynchronizedGet(final Blackhole blackhole, final MapState state) {
-        final Map<String,String> map = state.benchmarkMaps.getMap();
-        final String key = state.benchmarkMaps.produceKey();
+    private static String doSynchronizedPut(final Blackhole blackhole, final MapState state, final int numThreads) {
+        final Map<String,String> map = state.benchmarkMaps.produceMap(AVERAGE_NUM_OF_ENTRIES_ADDED_TO_EACH_MAP, numThreads);
+        final KeyValue<String,String> kv = state.benchmarkValues.produceKeyValue();
         final String result;
-        synchronized (map) {
-            result = map.get(key);
+        synchronized(map) {
+            result = map.put(kv.key, kv.value);
         }
+        blackhole.consume(kv);
         blackhole.consume(map);
-        blackhole.consume(key);
         return result;
     }
 
-    private static void doControl(final Blackhole blackhole, final MapState state) {
+    private static void doControl(final Blackhole blackhole, final MapState state, final int numThreads) {
         // This control will allow us to subtract the time taken by the execution of the parts of the
         // benchmarks that were not what we were actually measuring, and could not be moved to a @Setup
         // method in the @State class because invocation-level setup methods are discouraged.
         // NOTE we are using a HashMapState for this purpose but we could be using any other one as
         // the code being executed here is exactly the same for all State classes.
-        final Map<String,String> map = state.benchmarkMaps.getMap();
-        final String key = state.benchmarkMaps.produceKey();
+        final Map<String,String> map = state.benchmarkMaps.produceMap(AVERAGE_NUM_OF_ENTRIES_ADDED_TO_EACH_MAP, numThreads);
+        final KeyValue<String,String> kv = state.benchmarkValues.produceKeyValue();
+        blackhole.consume(kv);
         blackhole.consume(map);
-        blackhole.consume(key);
     }
 
 
@@ -159,72 +160,74 @@ public class GetBenchmark {
 
     @Benchmark
     public String atomicHashMap_1(final Blackhole blackhole, final AtomicHashMapState state) {
-        return doAtomicGet(blackhole, state);
+        return doAtomicPut(blackhole, state, 1);
     }
     @Benchmark @Threads(2)
     public String atomicHashMap_2(final Blackhole blackhole, final AtomicHashMapState state) {
-        return doAtomicGet(blackhole, state);
+        return doAtomicPut(blackhole, state, 2);
     }
     @Benchmark @Threads(4)
     public String atomicHashMap_4(final Blackhole blackhole, final AtomicHashMapState state) {
-        return doAtomicGet(blackhole, state);
+        return doAtomicPut(blackhole, state, 4);
     }
 
 
     @Benchmark
-    public String concurrentHashMap_1(final Blackhole blackhole, final ConcurrentHashMapState state) {
-        return doAtomicGet(blackhole, state);
+    public String putConcurrentHashMap_1(final Blackhole blackhole, final ConcurrentHashMapState state) {
+        return doAtomicPut(blackhole, state, 1);
     }
     @Benchmark @Threads(2)
-    public String concurrentHashMap_2(final Blackhole blackhole, final ConcurrentHashMapState state) {
-        return doAtomicGet(blackhole, state);
+    public String putConcurrentHashMap_2(final Blackhole blackhole, final ConcurrentHashMapState state) {
+        return doAtomicPut(blackhole, state, 2);
     }
     @Benchmark @Threads(4)
-    public String concurrentHashMap_4(final Blackhole blackhole, final ConcurrentHashMapState state) {
-        return doAtomicGet(blackhole, state);
+    public String putConcurrentHashMap_4(final Blackhole blackhole, final ConcurrentHashMapState state) {
+        return doAtomicPut(blackhole, state, 4);
     }
 
 
     @Benchmark
-    public String hashMap_1(final Blackhole blackhole, final HashMapState state) {
-        return doSynchronizedGet(blackhole, state);
+    public String putHashMap_1(final Blackhole blackhole, final HashMapState state) {
+        return doSynchronizedPut(blackhole, state, 1);
     }
     @Benchmark @Threads(2)
-    public String hashMap_2(final Blackhole blackhole, final HashMapState state) {
-        return doSynchronizedGet(blackhole, state);
+    public String putHashMap_2(final Blackhole blackhole, final HashMapState state) {
+        return doSynchronizedPut(blackhole, state, 2);
     }
     @Benchmark @Threads(4)
-    public String hashMap_4(final Blackhole blackhole, final HashMapState state) {
-        return doSynchronizedGet(blackhole, state);
+    public String putHashMap_4(final Blackhole blackhole, final HashMapState state) {
+        return doSynchronizedPut(blackhole, state, 4);
     }
 
 
     @Benchmark
-    public String synchronizedMap_1(final Blackhole blackhole, final SynchronizedMapState state) {
-        return doAtomicGet(blackhole, state);
+    public String putSynchronizedMap_1(final Blackhole blackhole, final SynchronizedMapState state) {
+        return doAtomicPut(blackhole, state, 1);
     }
     @Benchmark @Threads(2)
-    public String synchronizedMap_2(final Blackhole blackhole, final SynchronizedMapState state) {
-        return doAtomicGet(blackhole, state);
+    public String putSynchronizedMap_2(final Blackhole blackhole, final SynchronizedMapState state) {
+        return doAtomicPut(blackhole, state, 2);
     }
     @Benchmark @Threads(4)
-    public String synchronizedMap_4(final Blackhole blackhole, final SynchronizedMapState state) {
-        return doAtomicGet(blackhole, state);
+    public String putSynchronizedMap_4(final Blackhole blackhole, final SynchronizedMapState state) {
+        return doAtomicPut(blackhole, state, 4);
     }
 
 
     @Benchmark
-    public String linkedHashMap_1(final Blackhole blackhole, final LinkedHashMapState state) {
-        return doSynchronizedGet(blackhole, state);
+    public String putLinkedHashMap_1(final Blackhole blackhole, final LinkedHashMapState state) {
+        return doSynchronizedPut(blackhole, state, 1);
     }
     @Benchmark @Threads(2)
-    public String linkedHashMap_2(final Blackhole blackhole, final LinkedHashMapState state) {
-        return doSynchronizedGet(blackhole, state);
+    public String putLinkedHashMap_2(final Blackhole blackhole, final LinkedHashMapState state) {
+        return doSynchronizedPut(blackhole, state, 2);
     }
     @Benchmark @Threads(4)
-    public String linkedHashMap_4(final Blackhole blackhole, final LinkedHashMapState state) {
-        return doSynchronizedGet(blackhole, state);
+    public String putLinkedHashMap_4(final Blackhole blackhole, final LinkedHashMapState state) {
+        return doSynchronizedPut(blackhole, state, 4);
     }
+
+
 
 
     // NOTE it makes sense to also have one benchmark control method for each number of threads being tested
@@ -234,17 +237,16 @@ public class GetBenchmark {
 
     @Benchmark
     public void control_1(final Blackhole blackhole, final HashMapState state) {
-        doControl(blackhole, state);
+        doControl(blackhole, state, 1);
     }
     @Benchmark @Threads(2)
     public void control_2(final Blackhole blackhole, final HashMapState state) {
-        doControl(blackhole, state);
+        doControl(blackhole, state, 2);
     }
     @Benchmark @Threads(4)
     public void control_4(final Blackhole blackhole, final HashMapState state) {
-        doControl(blackhole, state);
+        doControl(blackhole, state, 4);
     }
-
 
 
 }

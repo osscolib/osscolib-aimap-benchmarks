@@ -38,7 +38,6 @@ public final class BenchmarkMaps {
     private final Supplier<Map<String,String>> mapSupplier;
     private final Map<String,String>[] mapPool;
     private final int initialMapSize;
-    private final int numThreads;
     private final BenchmarkValues values;
 
     private String[] mapKeys;
@@ -48,20 +47,19 @@ public final class BenchmarkMaps {
 
 
     public static BenchmarkMaps createSingleMap(int initialMapSize, final BenchmarkValues values, final Supplier<Map<String,String>> mapSupplier) {
-        return new BenchmarkMaps(false, 1, -1, initialMapSize, values, mapSupplier);
+        return new BenchmarkMaps(false, 1, initialMapSize, values, mapSupplier);
     }
 
-    public static BenchmarkMaps createPool(int mapPoolSize, int numThreads, int initialMapSize,
+    public static BenchmarkMaps createPool(int mapPoolSize, int initialMapSize,
                                     final BenchmarkValues values, final Supplier<Map<String,String>> mapSupplier) {
-        return new BenchmarkMaps(true, mapPoolSize, numThreads, initialMapSize, values, mapSupplier);
+        return new BenchmarkMaps(true, mapPoolSize, initialMapSize, values, mapSupplier);
     }
 
 
-    private BenchmarkMaps(final boolean pool, int mapPoolSize, int numThreads, int initialMapSize,
+    private BenchmarkMaps(final boolean pool, int mapPoolSize, int initialMapSize,
                          final BenchmarkValues values, final Supplier<Map<String,String>> mapSupplier) {
         super();
         this.pool = pool;
-        this.numThreads = numThreads;
         this.initialMapSize = initialMapSize;
         this.mapPool = new Map[mapPoolSize];
         this.mapKeys = new String[initialMapSize];
@@ -106,24 +104,32 @@ public final class BenchmarkMaps {
     }
 
 
-    public Map<String,String> produceMap() {
+    public Map<String,String> getMap() {
+        if (this.pool) {
+            throw new IllegalStateException("Cannot get map. This is a pool");
+        }
+        return this.mapPool[0];
+    }
+
+
+    public Map<String,String> produceMap(final int mapRepeats, final int numThreads) {
 
         if (!this.pool) {
-            return this.mapPool[0];
+            throw new IllegalStateException("Cannot produce map with n repeats or threads. This is not a pool");
         }
 
         // We will try to send the same map to each thread once in order to have some contention. No guarantee though.
-        final int m = (this.m.getAndIncrement() / this.numThreads);
+        final int m = ((this.m.getAndIncrement() / numThreads) / mapRepeats);
         if (m >= this.mapPool.length) {
             throw new IllegalStateException(
                     String.format(
-                        "Your computer is too fast, or the map pool is too small. " +
-                        "Benchmark required more map instances from the pool that were initialised " +
-                        "(pool size = %d, and it should be at least: num operations (benchmark calls) " +
-                        "per benchmark iteration / %d threads). Increase the " +
-                        "size of the Map pool or reduce the time for each benchmark execution so that less instances " +
-                        "are needed. Map instances cannot be reused so that previous state modifications don't affect " +
-                        "subsequent benchmark executions.", this.mapPool.length, this.numThreads));
+                            "Your computer is too fast, or the map pool is too small. " +
+                            "Benchmark required more map instances from the pool that were initialised " +
+                            "(pool size = %d, and it should be at least: %d num operations in iteration / " +
+                            "(%d num threads · %d num times the same map is to be repeated)). Increase the " +
+                            "size of the Map pool or reduce the time for each benchmark execution so that less instances " +
+                            "are needed. Map instances cannot be reused so that previous state modifications don't affect " +
+                            "subsequent benchmark executions.", this.mapPool.length, numThreads));
         }
         return this.mapPool[m];
 
