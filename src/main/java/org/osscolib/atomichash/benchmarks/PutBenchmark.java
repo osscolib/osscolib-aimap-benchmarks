@@ -159,71 +159,71 @@ public class PutBenchmark {
 
 
     @Benchmark
-    public String atomicHashMap_1(final Blackhole blackhole, final AtomicHashMapState state) {
+    public String t1_atomicHashMap(final Blackhole blackhole, final AtomicHashMapState state) {
         return doAtomicPut(blackhole, state, 1);
     }
     @Benchmark @Threads(2)
-    public String atomicHashMap_2(final Blackhole blackhole, final AtomicHashMapState state) {
+    public String t2_atomicHashMap(final Blackhole blackhole, final AtomicHashMapState state) {
         return doAtomicPut(blackhole, state, 2);
     }
     @Benchmark @Threads(4)
-    public String atomicHashMap_4(final Blackhole blackhole, final AtomicHashMapState state) {
+    public String t4_atomicHashMap(final Blackhole blackhole, final AtomicHashMapState state) {
         return doAtomicPut(blackhole, state, 4);
     }
 
 
     @Benchmark
-    public String concurrentHashMap_1(final Blackhole blackhole, final ConcurrentHashMapState state) {
+    public String t1_concurrentHashMap(final Blackhole blackhole, final ConcurrentHashMapState state) {
         return doAtomicPut(blackhole, state, 1);
     }
     @Benchmark @Threads(2)
-    public String concurrentHashMap_2(final Blackhole blackhole, final ConcurrentHashMapState state) {
+    public String t2_concurrentHashMap(final Blackhole blackhole, final ConcurrentHashMapState state) {
         return doAtomicPut(blackhole, state, 2);
     }
     @Benchmark @Threads(4)
-    public String concurrentHashMap_4(final Blackhole blackhole, final ConcurrentHashMapState state) {
+    public String t4_concurrentHashMap(final Blackhole blackhole, final ConcurrentHashMapState state) {
         return doAtomicPut(blackhole, state, 4);
     }
 
 
     @Benchmark
-    public String hashMap_1(final Blackhole blackhole, final HashMapState state) {
+    public String t1_hashMap(final Blackhole blackhole, final HashMapState state) {
         return doSynchronizedPut(blackhole, state, 1);
     }
     @Benchmark @Threads(2)
-    public String hashMap_2(final Blackhole blackhole, final HashMapState state) {
+    public String t2_hashMap(final Blackhole blackhole, final HashMapState state) {
         return doSynchronizedPut(blackhole, state, 2);
     }
     @Benchmark @Threads(4)
-    public String hashMap_4(final Blackhole blackhole, final HashMapState state) {
+    public String t4_hashMap(final Blackhole blackhole, final HashMapState state) {
         return doSynchronizedPut(blackhole, state, 4);
     }
 
 
     @Benchmark
-    public String synchronizedMap_1(final Blackhole blackhole, final SynchronizedMapState state) {
+    public String t1_synchronizedMap(final Blackhole blackhole, final SynchronizedMapState state) {
         return doAtomicPut(blackhole, state, 1);
     }
     @Benchmark @Threads(2)
-    public String synchronizedMap_2(final Blackhole blackhole, final SynchronizedMapState state) {
+    public String t2_synchronizedMap(final Blackhole blackhole, final SynchronizedMapState state) {
         return doAtomicPut(blackhole, state, 2);
     }
     @Benchmark @Threads(4)
-    public String synchronizedMap_4(final Blackhole blackhole, final SynchronizedMapState state) {
+    public String t4_synchronizedMap(final Blackhole blackhole, final SynchronizedMapState state) {
         return doAtomicPut(blackhole, state, 4);
     }
 
 
     @Benchmark
-    public String linkedHashMap_1(final Blackhole blackhole, final LinkedHashMapState state) {
+    public String t1_linkedHashMap(final Blackhole blackhole, final LinkedHashMapState state) {
         return doSynchronizedPut(blackhole, state, 1);
     }
     @Benchmark @Threads(2)
-    public String linkedHashMap_2(final Blackhole blackhole, final LinkedHashMapState state) {
+    public String t2_linkedHashMap(final Blackhole blackhole, final LinkedHashMapState state) {
         return doSynchronizedPut(blackhole, state, 2);
     }
     @Benchmark @Threads(4)
-    public String linkedHashMap_4(final Blackhole blackhole, final LinkedHashMapState state) {
+    public String t4_linkedHashMap(final Blackhole blackhole, final LinkedHashMapState state) {
         return doSynchronizedPut(blackhole, state, 4);
     }
 
@@ -236,15 +236,15 @@ public class PutBenchmark {
     // measured in order to have a more accurate control time.
 
     @Benchmark
-    public void control_1(final Blackhole blackhole, final HashMapState state) {
+    public void t1_control(final Blackhole blackhole, final HashMapState state) {
         doControl(blackhole, state, 1);
     }
     @Benchmark @Threads(2)
-    public void control_2(final Blackhole blackhole, final HashMapState state) {
+    public void t2_control(final Blackhole blackhole, final HashMapState state) {
         doControl(blackhole, state, 2);
     }
     @Benchmark @Threads(4)
-    public void control_4(final Blackhole blackhole, final HashMapState state) {
+    public void t4_control(final Blackhole blackhole, final HashMapState state) {
         doControl(blackhole, state, 4);
     }
 
