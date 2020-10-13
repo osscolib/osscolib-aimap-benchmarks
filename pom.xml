@@ -95,7 +95,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <osscolib-atomichash.version>0.0.1.BUILD-SNAPSHOT</osscolib-atomichash.version>
         <jmh.version>1.21</jmh.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <commons-lang3.version>3.8.1</commons-lang3.version>
     </properties>
 	
